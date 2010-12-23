@@ -39,7 +39,7 @@ public class helloListView extends ListActivity {
       lv.setTextFilterEnabled(true);
 
       lv.setOnItemClickListener(new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View view,
+        public void onItemClick(AdapterView<?> parent, View v,
             int position, long id) {
           
         	/*
@@ -58,28 +58,34 @@ public class helloListView extends ListActivity {
         	startActivityForResult(i,SUB_ACTIVITY_REQUEST_CODE);
         	
         	// When clicked, show a toast with the TextView text
-        	Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
+        	Toast.makeText(getApplicationContext(), ((TextView) v).getText(),
               Toast.LENGTH_SHORT).show();
         }
       });    
       
     }
     
+    // Listen for results.
     @Override 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {     
       super.onActivityResult(requestCode, resultCode, data); 
+      // See which child activity is calling us back.
       switch(requestCode) { 
-        case (SUB_ACTIVITY_REQUEST_CODE) : { 
-          if (resultCode == Activity.RESULT_OK) { 
-        	  String tabIndex = data.getStringExtra(PUBLIC_STATIC_STRING_IDENTIFIER);
+        case SUB_ACTIVITY_REQUEST_CODE:
+        	// This is the standard resultCode that is sent back if the
+            // activity crashed or didn't doesn't supply an explicit result.
+        	if (resultCode == Activity.RESULT_OK) { 
+        	  String returnData = data.getStringExtra(PUBLIC_STATIC_STRING_IDENTIFIER);
 
-        	  Toast.makeText(getApplicationContext(), "onActivityResult: " + tabIndex, Toast.LENGTH_LONG).show();
-        	  Log.i(TAG, "onActivityResult: " + tabIndex);
-          } 
-          break; 
-        } 
+        	  Toast.makeText(getApplicationContext(), "onActivityResult: " + returnData, Toast.LENGTH_LONG).show();
+        	  Log.i(TAG, "onActivityResult: " + returnData);
+        	}else if (resultCode == RESULT_CANCELED){
+        		Log.i(TAG, "onActivityResult: ERROR");	
+        	}
+        default:
+        	break; 
       } 
-    }
+	}     
     
     /*
      * Note that using a hard-coded string array is not the best design practice.

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
  
 public class modalPopup extends Activity implements OnClickListener{
@@ -30,16 +31,19 @@ public class modalPopup extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modalpopup);     
 
-        Bundle b = this.getIntent().getExtras();
-        String s = b.getString("IDENT");
-        Toast.makeText(getApplicationContext(), "Subactivity: " + s, Toast.LENGTH_LONG).show();        
-		Log.d(TAG,"Subactivity: " + s);
-		
-        // find views by id
+        // find views by id        
+        TextView textData = (TextView)findViewById(R.id.textData);
         Button buttonClose = (Button)findViewById(R.id.buttonClose);
         
         // add listener
         buttonClose.setOnClickListener(this);         
+      
+       
+        Bundle b = this.getIntent().getExtras();
+        String s = b.getString("IDENT");
+        textData.setText(s); 
+        Toast.makeText(getApplicationContext(), "Subactivity: " + s, Toast.LENGTH_LONG).show();        
+		Log.d(TAG,"Subactivity: " + s);
     }
 
 	public void onClick(View v) {
